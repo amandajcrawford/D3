@@ -1,0 +1,82 @@
+<html>
+  <head></head>
+  <body>
+        <form>
+            <% if cheat %>
+                <p>Truth Symbol: <%= t_symbol %></p>
+                <p>False Symbol: <%= f_symbol %></p>
+                <p>Size: <%= size %></p>
+                <% unless valid %>
+                    <p>
+                        Invalid 
+                    <p>
+                <% else %>
+                    <p>
+                        Valid 
+                    <p>
+                <% end %>
+            <% end %>
+            <% unless submitted %>
+                <label for="truth">True symbol:</label>
+                <input type='text' name='t_symbol'/><br>
+                <label for="false">False symbol:</label>
+                <input type='text' name='f_symbol'/><br>
+                <label for="size">Size (2^x):</label>
+                <input type='text' name='size'/><br>
+                <input type='submit' name='submitted' value='Show truth table'><br>
+                <a href="/">Reload page</a>
+            <% else %>
+            <% unless valid%>
+                <h1>
+                    ERROR
+                    </h1>
+                    <h2>
+                    <b>Invalid parameters.</b>
+                    </h2>
+                    <p>
+                        Please enter:
+                    <p>
+                    <ol>
+                    <li>A single-character true symbol</li>
+                    <li>A single-character false symbol</li>
+                    <li>A size greater than or equal to 2</li>
+                    <li>Different characters for the true and false symbols</li>
+                    </ol>
+                    <a href="/">Back to main</a>
+            <% else%>
+            <table>
+                    <tbody><thead>
+                        <% table.size.downto(1)  do |i| %> 
+                            <th> <%= i-1 %> </th>
+                        <% end %>
+                        <th>AND</th>
+                        <th>OR</th>
+                        <th>XOR</th>
+                    </thead>
+
+                    <%table.r_size.times do |i| %> 
+                        <tr>
+                            <% table.size.times do |j| %>
+                                <td> 
+                                    <%= table.table[i][j] %>
+                                </td>
+                            <% end %>
+                            
+                            <td> 
+                                <%= table.and[i] %>
+                            </td>
+                            <td> 
+                                <%= table.or[i] %>
+                            </td>
+                            <td> 
+                                <%= table.xor[i] %>
+                            </td>
+                        </tr>
+                    <% end %>
+                </tbody></table>
+                <a href="/">Back to main page</a>
+            <% end %>
+            <% end %>
+        </form>
+  </body>
+</html>
