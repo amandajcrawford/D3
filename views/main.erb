@@ -23,8 +23,8 @@
                 <input type='text' name='f_symbol'/><br>
                 <label for="size">Size (2^x):</label>
                 <input type='text' name='size'/><br>
-                <input type='submit' name='submitted' value='Show truth table'><br>
-                <a href="/">Reload page</a>
+                <input id="submit_button" type='submit' name='submitted' value='Show truth table'><br>
+                <a id="reload_button_main" href="/">Reload page</a>
             <% else %>
             <% unless valid%>
                 <h1>
@@ -42,22 +42,22 @@
                     <li>A size greater than or equal to 2</li>
                     <li>Different characters for the true and false symbols</li>
                     </ol>
-                    <a href="/">Back to main</a>
+                    <a id="back_main_error" href="/">Back to main</a>
             <% else%>
-            <table>
+            <table id="truth_table">
                     <tbody><thead>
                         <% table.size.downto(1)  do |i| %> 
-                            <th> <%= i-1 %> </th>
+                            <th id="<%= i-1 %>"> <%= i-1 %> </th>
                         <% end %>
-                        <th>AND</th>
-                        <th>OR</th>
-                        <th>XOR</th>
+                        <th id="and_col">AND</th>
+                        <th id="or_col">OR</th>
+                        <th id="xor_col">XOR</th>
                     </thead>
 
                     <%table.r_size.times do |i| %> 
                         <tr>
                             <% table.size.times do |j| %>
-                                <td> 
+                                <td > 
                                     <%= table.table[i][j] %>
                                 </td>
                             <% end %>
@@ -74,7 +74,7 @@
                         </tr>
                     <% end %>
                 </tbody></table>
-                <a href="/">Back to main page</a>
+                <a id="back_button_truth" href="/">Back to main page</a>
             <% end %>
             <% end %>
         </form>

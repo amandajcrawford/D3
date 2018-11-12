@@ -4,6 +4,11 @@ require 'sinatra/reloader'
 
 # The true and false symbol that will be entered and truth table size
 
+class String
+    def numeric?
+      Float(self) != nil rescue false
+    end
+end
 
 class Truth_Table
     attr_reader :size, :f_symbol, :t_symbol, :table, :r_size
@@ -52,7 +57,7 @@ class Truth_Table
         and_column = Array.new(@r_size, f_symbol)
         # And each column in the table 
         @table.each.with_index do |row, idx|
-            val = row.each_cons(2).all? { |a,b| a == b }
+            val = row.each_cons(2).all? { |a,b| a == b } && row.any? {|a| a == @t_symbol}
             if val
                 and_column[idx] = @t_symbol
             end
@@ -86,10 +91,6 @@ class Truth_Table
 end 
 
 get '/' do
-    ps = params['size']
-    pts = params['t_symbol']
-    pfs = params['f_symbol']
-    pss = params['submitted']
 
     cheat = false
     submitted = false
@@ -98,6 +99,11 @@ get '/' do
     t_symbol = 'T'
     f_symbol = 'F'
     table = Truth_Table.new(size, t_symbol, f_symbol)
+    
+    ps = params['size']
+    pts = params['t_symbol']
+    pfs = params['f_symbol']
+    pss = params['submitted']
 
     if !ps.nil? && valid && ps != ''
         valid = (ps.to_i > 2) 
@@ -105,12 +111,12 @@ get '/' do
     end
 
     if !pts.nil? && valid && pts != ''
-        valid = (pts.is_a?(String) && pts.length === 1)
+        valid = (!pts.numeric? && pts.length === 1)
         t_symbol = valid ? pts : t_symbol
     end 
 
     if !pfs.nil? && valid && pfs != ''
-        valid = (pfs.is_a?(String) && pfs.length === 1 && pfs != t_symbol)
+        valid = (!pfs.numeric? && pfs.length === 1 && pfs != t_symbol)
         f_symbol = valid ? pfs : f_symbol  
     end
 
